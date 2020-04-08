@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hyxh.dao.ParticipantsSignUpDao">
+
+    <!-- 新增参会注册 -->
+    <insert id="registered" parameterType="com.hyxh.entity.ParticipantsSignUp" >
+        insert into Participants_signUp(Participants_Id, signup_name,  signup_mobile, 
+        				idcard_id, company_name, company_position,
+						email, telephone, province, city,
+						county, fax, website,dept_name, zipcode,
+						register_date)
+        values (#{participantsId},#{signupName}, #{signupMobile},#{idcardId},
+	        #{companyName},#{companyPosition},#{email},
+	        #{telephone},#{province},#{city},
+	        #{county},#{fax},#{website},#{deptName},
+	         #{zipcode} , #{registerDate})
+    </insert>
+    <!-- 检测手机号是否存在 -->
+    <select id="getMobilephone" parameterType="com.hyxh.entity.ParticipantsSignUp" resultType="java.util.HashMap">
+        select * from Participants_signUp   where 1=1  and signup_mobile = #{signupMobile}
+    </select>
+     <!-- 检测草稿箱手机号是否存在 -->
+    <select id="getdraftMobilephone" parameterType="com.hyxh.entity.ParticipantsSignUp" resultType="java.util.HashMap">
+        select * from Participants_signUp_draft   where 1=1  and signup_mobile = #{signupMobile}
+    </select>
+    <!-- 草稿箱保存 -->
+    <insert id="adddraft" parameterType="com.hyxh.entity.ParticipantsSignUp" >
+        insert into Participants_signUp_draft(Participants_Id, signup_name,  signup_mobile, 
+        				idcard_id, company_name, company_position,
+						email, telephone, province, city,
+						county, fax, website,dept_name, zipcode,
+						register_date)
+        values (#{participantsId},#{signupName}, #{signupMobile},#{idcardId},
+	        #{companyName},#{companyPosition},#{email},
+	        #{telephone},#{province},#{city},
+	        #{county},#{fax},#{website},#{deptName},
+	         #{zipcode} , #{registerDate})
+	        
+	 </insert>
+    <!-- 草稿箱修改 -->
+    <update id="updatedraft" parameterType="com.hyxh.entity.ParticipantsSignUp">
+        UPDATE personal_vip_draft SET  mobilephone = #{mobilephone },  state = #{state }, 
+        				idcard_id = #{idcardId }, idcard_name = #{idcardName }, register_date = #{registerDate },
+						company_name = #{companyName }, company_position = #{companyPosition }, email = #{ email}, 
+						telephone = #{telephone },province=#{province}, city = #{city }, county=#{county},vip_source = #{vipSource },
+						 website = #{website },dept_name = #{deptName }, zip_code = #{ zipCode}, fax = #{fax }
+        
+         WHERE user_id = #{userId} ;
+	</update>
+    
+    
+    <!-- 发票 -->
+    <insert id="addinvoice" parameterType="com.hyxh.entity.Invoice" >
+    	
+        insert into invoice(invoice_id, user_id,  company_name, 
+        				company_rise, duty_paragraph, mobilephone,
+						email, pay_type)
+        values (#{invoiceId},#{userId}, #{companyName},#{companyRise},
+	        #{dutyParagraph},#{mobilephone},#{email},
+	        #{payType}
+	        )
+	        
+	 </insert>
+    
+   
+</mapper>

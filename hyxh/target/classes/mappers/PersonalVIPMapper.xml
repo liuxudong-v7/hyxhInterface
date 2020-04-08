@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hyxh.dao.PersonalVIPDao">
+   
+    <!-- 新增个人注册 -->
+    <insert id="registered" parameterType="com.hyxh.entity.PersonalVip" >
+     	<selectKey keyProperty="userId" resultType="String" order="BEFORE">  
+      		  select uuid() 
+   		</selectKey>  
+     
+        insert into personal_vip(user_id, mobilephone,  state, 
+        				idcard_id, idcard_name, register_date,
+						company_name, company_position, email, telephone,
+						province, city, county,vip_source, website,
+						dept_name, zip_code, fax)
+        values (#{userId},#{mobilephone}, #{state},#{idcardId},
+	        #{idcardName},#{registerDate},#{companyName},
+	        #{companyPosition},#{email},#{telephone},
+	        #{province},#{city},#{county},#{vipSource},
+	         #{website} , #{deptName} , #{zipCode}, #{fax} 
+	        )
+    </insert>
+    <!-- 检测手机号是否存在 -->
+    <select id="getMobilephone" parameterType="com.hyxh.entity.PersonalVip" resultType="java.util.HashMap">
+        select * from personal_vip   where 1=1  and mobilephone = #{mobilephone}
+    </select>
+     <!-- 检测草稿箱手机号是否存在 -->
+    <select id="getdraftMobilephone" parameterType="com.hyxh.entity.PersonalVip" resultType="java.util.HashMap">
+        select * from personal_vip_draft   where 1=1  and mobilephone = #{mobilephone}
+    </select>
+    <!-- 草稿箱保存 -->
+    <insert id="adddraft" parameterType="com.hyxh.entity.PersonalVip" >
+    	<selectKey keyProperty="userId" resultType="String" order="BEFORE">  
+      		  select uuid() 
+   		</selectKey>  
+        insert into personal_vip_draft(user_id, mobilephone,   
+        				idcard_id, idcard_name, register_date,
+						company_name, company_position, email, telephone,
+						province, city, county,vip_source, website,
+						dept_name, zip_code, fax)
+        values (#{userId},#{mobilephone},#{idcardId},
+	        #{idcardName},#{registerDate},#{companyName},
+	        #{companyPosition},#{email},#{telephone},
+	        #{province},#{city},#{county},#{vipSource},
+	         #{website} , #{deptName} , #{zipCode}, #{fax} 
+	        )
+	        
+	 </insert>
+    <!-- 草稿箱修改 -->
+    <update id="updatedraft" parameterType="com.hyxh.entity.PersonalVip">
+        UPDATE personal_vip_draft SET  mobilephone = #{mobilephone },  state = #{state }, 
+        				idcard_id = #{idcardId }, idcard_name = #{idcardName }, register_date = #{registerDate },
+						company_name = #{companyName }, company_position = #{companyPosition }, email = #{ email}, 
+						telephone = #{telephone },province=#{province}, city = #{city }, county=#{county},vip_source = #{vipSource },
+						 website = #{website },dept_name = #{deptName }, zip_code = #{ zipCode}, fax = #{fax }
+        
+         WHERE user_id = #{userId} ;
+	</update>
+    
+    
+    <!-- 发票 -->
+    <insert id="addinvoice" parameterType="com.hyxh.entity.Invoice" >
+    	
+        insert into invoice(invoice_id, user_id,  company_name, 
+        				company_rise, duty_paragraph, mobilephone,
+						email, pay_type)
+        values (#{invoiceId},#{userId}, #{companyName},#{companyRise},
+	        #{dutyParagraph},#{mobilephone},#{email},
+	        #{payType}
+	        )
+	        
+	 </insert>
+    
+   
+</mapper>

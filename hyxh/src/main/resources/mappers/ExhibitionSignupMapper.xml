@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hyxh.dao.ExhibitionSignupDao">
+   
+    <!-- 新增观展注册 -->
+    <insert id="registered" parameterType="com.hyxh.entity.ExhibitionSignup" >
+        insert into exhibition_signup(exhibition_id, signup_name,  signup_mobile, 
+        				admission_code, company_name, company_position,email,
+        				telephone,province,city,county,fax,website,deptname,
+        				zipcode,signup_date)
+        values (#{exhibitionId},#{signupName}, #{signupMobile},
+        #{admissionCode}, #{companyName},#{companyPosition},#{email},
+        #{telephone},#{province},#{city},#{county},#{fax},#{website},#{deptname},
+        #{zipcode},#{signupDate})
+    </insert>
+    
+    <!-- 新增问卷调查 -->
+    <insert id="questionnaire" parameterType="com.hyxh.entity.ExhibitionSignup" >
+        insert into questionnaire(id, interest,  objective, 
+        				exhibition_id)
+        values (#{id},#{interest}, #{objective},#{exhibitionId})
+    </insert>
+     <!-- 新增观展注册草稿 -->
+    <insert id="adddraft" parameterType="com.hyxh.entity.ExhibitionSignup" >
+        insert into exhibition_signup_draft(exhibition_id, signup_name,  signup_mobile, 
+        				admission_code, company_name, company_position,email,
+        				telephone,province,city,county,fax,website,deptname,
+        				zipcode,signup_date)
+        values (#{exhibitionId},#{signupName}, #{signupMobile},
+        #{admissionCode}, #{companyName},#{companyPosition},#{email},
+        #{telephone},#{province},#{city},#{county},#{fax},#{website},#{deptname},
+        #{zipcode},#{signupDate})
+    </insert>
+    <!-- 草稿箱修改 -->
+    <update id="updatedraft" parameterType="com.hyxh.entity.ExhibitionSignup">
+        UPDATE exhibition_signup_draft SET  mobilephone = #{mobilephone },  
+        state = #{state },register_date = #{registerDate },
+        photos_code = #{photosCode },vip_source = #{vipSource },vip_identity = #{vipIdentity }
+         WHERE team_id = #{teamId } ;
+	</update>
+   <!-- 新增团体会员照片 -->
+    <insert id="teamphotoadd" parameterType="com.hyxh.entity.TeamPhotos" >
+        insert into team_photos(team_id, mobilephone,  photos_name,file_name)
+        values (#{teamId},#{mobilephone}, #{photosName},#{fileName})
+    </insert>
+    
+     <!-- 检测草稿箱手机号是否存在 -->
+    <select id="getdraftMobilephone" parameterType="com.hyxh.entity.ExhibitionSignup" resultType="java.util.HashMap">
+        select * from exhibition_signup_draft   where 1=1  and signup_mobile = #{signupMobile}
+    </select>
+   
+</mapper>

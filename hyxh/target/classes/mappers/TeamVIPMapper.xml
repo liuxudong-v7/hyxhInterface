@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hyxh.dao.TeamVIPDao">
+   
+    <!-- 新增团体会员注册 -->
+    <insert id="registered" parameterType="com.hyxh.entity.TeamRegister" >
+        insert into team_register(team_id, state,  register_date, 
+        				photos_code, vip_source, vip_identity,mobilephone)
+        values (#{teamId},#{state}, #{registerDate},
+        #{photosCode}, #{vipSource},#{vipIdentity},#{mobilephone})
+    </insert>
+     <!-- 新增团体会员注册草稿 -->
+    <insert id="adddraft" parameterType="com.hyxh.entity.TeamRegister" >
+        insert into team_register_draft(team_id, state,  register_date, 
+        				photos_code, vip_source, vip_identity,mobilephone)
+        values (#{teamId},#{state}, #{registerDate},
+        #{photosCode}, #{vipSource},#{vipIdentity},#{mobilephone})
+    </insert>
+    <!-- 草稿箱修改 -->
+    <update id="updatedraft" parameterType="com.hyxh.entity.TeamRegister">
+        UPDATE team_register_draft SET  mobilephone = #{mobilephone },  
+        state = #{state },register_date = #{registerDate },
+        photos_code = #{photosCode },vip_source = #{vipSource },vip_identity = #{vipIdentity }
+         WHERE team_id = #{teamId } ;
+	</update>
+   <!-- 新增团体会员照片 -->
+    <insert id="teamphotoadd" parameterType="com.hyxh.entity.TeamPhotos" >
+        insert into team_photos(team_id, mobilephone,  photos_name,file_name)
+        values (#{teamId},#{mobilephone}, #{photosName},#{fileName})
+    </insert>
+    
+     <!-- 检测草稿箱手机号是否存在 -->
+    <select id="getdraftMobilephone" parameterType="com.hyxh.entity.TeamRegister" resultType="java.util.HashMap">
+        select * from team_register_draft   where 1=1  and mobilephone = #{mobilephone}
+    </select>
+   
+</mapper>
